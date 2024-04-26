@@ -15,11 +15,11 @@ The Travel Planner API does not require authentication for accessing public info
 The base URL for the Travel Planner API is  `http://localhost:3000/api/`.
 `.
 
-- `/attractions`: Retrieve information about tourist attractions.
-- `/accommodation`: Get details about accommodation options.
-- `/transport`: Access transportation options available in a destination.
-- `/weather`: Get current weather information for a specific location.
-- `/cuisine`: Explore local cuisine options.
+- `api/attractions`: Retrieve information about tourist attractions.
+- `api/accommodations`: Get details about accommodation options.
+- `api/transports`: Access transportation options available in a destination.
+- `api/weathers`: Get current weather information for a specific location.
+- `api/cuisines`: Explore local cuisine options.
 
 ## Request Parameters
 
