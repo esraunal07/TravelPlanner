@@ -15,15 +15,17 @@ export default function accommodation(server, mongoose) {
 
       // Şehir filtresini uygulama
       if (city) {
-        query = query.where('city').equals(city);
+     query = query.where('city').equals(city);
       }
 
-      // Toplam sayfa sayısını hesaplama
-      const totalAccommodations = await query.countDocuments();
-      const totalPages = Math.ceil(totalAccommodations / pageSize);
+// Verileri sayfalama ve belirli sayfa boyutuna göre alma
+const accommodations = await query.skip((page - 1) * pageSize).limit(pageSize);
 
-      // Verileri sayfalama ve belirli sayfa boyutuna göre alma
-      const accommodations = await query.skip((page - 1) * pageSize).limit(pageSize);
+// Toplam sayfa sayısını hesaplama (countDocuments fonksiyonunu buraya taşıdık)
+const totalAccommodations = await Accommodation.countDocuments(query);
+
+// Toplam sayfa sayısını hesaplama
+const totalPages = Math.ceil(totalAccommodations / pageSize);
 
       // Sonuçları döndürme
       res.status(200).json({

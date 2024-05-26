@@ -20,7 +20,8 @@ export default function attractions(server, mongoose) {
         query = query.where('category').equals(category);
       }
 
-      const totalAttractions = await query.countDocuments();
+      // Toplam sayıyı ve sayfaları hesapla
+      const totalAttractions = await Attraction.countDocuments(query.getQuery());
       const totalPages = Math.ceil(totalAttractions / pageSize);
       const skip = (page - 1) * pageSize;
 

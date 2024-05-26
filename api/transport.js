@@ -20,7 +20,8 @@ export default function transport(server, mongoose) {
         query = query.where('mode').equals(mode);
       }
 
-      const totalTransports = await query.countDocuments();
+      // Toplam sayıyı ve sayfaları hesapla
+      const totalTransports = await Transport.countDocuments(query.getQuery());
       const totalPages = Math.ceil(totalTransports / pageSize);
       const skip = (page - 1) * pageSize;
 
