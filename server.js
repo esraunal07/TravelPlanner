@@ -1,10 +1,10 @@
 import express from "express";
 import mongoose from "mongoose";
 import apiRegister from "./api-register.js";
-import transport from "./api/transport.js";
+
 
 const server = express();
-const port = 3002;
+const port = 3000;
 
 server.use(express.json());
 
@@ -21,3 +21,4 @@ apiRegister(server, mongoose);
 server.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+

@@ -1,13 +1,15 @@
 import attractions from "./api/attractions.js";
-import accommodation from "./api/accommodation.js";
-import transport from "./api/transport.js";
+import accommodations from "./api/accommodation.js";
+import transports from "./api/transport.js";
 import weather from "./api/weather.js";
-import cuisine from "./api/cuisine.js";
+import cuisines from "./api/cuisine.js";
 
 export default function (server, mongoose) {
   attractions(server, mongoose);
-  accommodation(server, mongoose);
-  transport(server, mongoose);
+  accommodations(server, mongoose);
+  transports(server, mongoose);
   weather(server, mongoose);
-  cuisine(server, mongoose);
+  cuisines(server, mongoose);
 }
+
+

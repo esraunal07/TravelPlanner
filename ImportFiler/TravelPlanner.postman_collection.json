@@ -1,0 +1,930 @@
+{
+	"info": {
+		"_postman_id": "4dc40742-88bb-4da3-8251-9f9ef0c1dc49",
+		"name": "TravelPlanner",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26744065",
+		"_collection_link": "https://universal-resonance-666434.postman.co/workspace/TravelPlanner~286f0a99-86fb-4013-8c52-09597075ed06/collection/26744065-4dc40742-88bb-4da3-8251-9f9ef0c1dc49?action=share&source=collection_link&creator=26744065"
+	},
+	"item": [
+		{
+			"name": "ManuellaTester",
+			"item": [
+				{
+					"name": "1-GetStatusKod",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/api/transports",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"api",
+								"transports"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2-CheckJSonFormat",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/api/attractions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"api",
+								"attractions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3-InvalidRequest",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"city\" : \"Abeo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3002/api/attractions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"api",
+								"attractions"
+							],
+							"query": [
+								{
+									"key": "stad",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4-TestFilter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/api/transports?mode\n",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"api",
+								"transports"
+							],
+							"query": [
+								{
+									"key": "mode\n",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5-",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "6-Specialcharacters",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/api/accommodations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"api",
+								"accommodations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7-ConcurrentRequests",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OtomatiseraTester",
+			"item": [
+				{
+					"name": "8-EndpointsValidation",
+					"item": [
+						{
+							"name": "Transport",
+							"item": [
+								{
+									"name": "GetTransport",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:3002/api/transports",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3002",
+											"path": [
+												"api",
+												"transports"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update",
+									"request": {
+										"method": "PUT",
+										"header": []
+									},
+									"response": []
+								},
+								{
+									"name": "Create",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"mode\" : \"bus\" \r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:3002/api/transports\n",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3002",
+											"path": [
+												"api",
+												"transports\n"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Remove",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"mode\" : \"bus\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:3002/api/transports",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3002",
+											"path": [
+												"api",
+												"transports"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Cuisine",
+							"item": [
+								{
+									"name": "GetCuisine",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:3002/api/cuisines",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3002",
+											"path": [
+												"api",
+												"cuisines"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"city\" : \"abeo\" \r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:3002/api/cuisines",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3002",
+											"path": [
+												"api",
+												"cuisines"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"city\" : \"antalya\" \r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:3002/api/cuisines\n",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3002",
+											"path": [
+												"api",
+												"cuisines\n"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Remove",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"city\" : \"antalya\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:3002/api/cuisines",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3002",
+											"path": [
+												"api",
+												"cuisines"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Attractions",
+							"item": [
+								{
+									"name": "remove",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\" : \"asdfgh\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:3002/api/attractions\n",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3002",
+											"path": [
+												"api",
+												"attractions\n"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetAttractions",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:3002/api/attractions\n",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3002",
+											"path": [
+												"api",
+												"attractions\n"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n     \"name\" : \"asdfgh\" \r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:3002/api/attractions\n",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3002",
+											"path": [
+												"api",
+												"attractions\n"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"city\" : \"antalya\" \r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:3002/api/cuisines\n",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3002",
+											"path": [
+												"api",
+												"cuisines\n"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "9-TestforTransportRecord",
+					"item": [
+						{
+							"name": "TransportData",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3002/api/transports",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3002",
+									"path": [
+										"api",
+										"transports"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UpdateTransport",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const mode = pm.environment.get(\"mode\");\r",
+											"\r",
+											"// Send the PUT request to update the mode record\r",
+											"pm.sendRequest({\r",
+											"    url: `http://localhost:3002/api/transports?mode=taxi`,\r",
+											"    method: 'PUT',\r",
+											"    header: {\r",
+											"        'Content-Type': 'application/json',\r",
+											"    },\r",
+											"    body: {\r",
+											"        \"mode \": \"taxi\",\r",
+											"    }\r",
+											"}, function (err, res) {\r",
+											"    // Save the updated mode from the request body in environment variable\r",
+											"    const updatedmode = pm.response.json().mode;\r",
+											"    pm.environment.set(\"updatedmode\", updatedmode);\r",
+											"    console.log(updatedmode);\r",
+											"    pm.test(\"Update Mode Record\", function () {\r",
+											"        // Check if the user record update was successful\r",
+											"        pm.expect(err).to.be.null;\r",
+											"        pm.expect(res).to.have.property('code', 200);\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3002/api/transports?mode=taxi\n",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3002",
+									"path": [
+										"api",
+										"transports"
+									],
+									"query": [
+										{
+											"key": "mode",
+											"value": "taxi\n"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "1-Get-StatusKod",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/api/transports",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"api",
+								"transports"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2-VerifyJsonFormat",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Response format should be JSON\", function () {\r",
+									"    pm.response.to.be.json; \r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/api/attractions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"api",
+								"attractions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3-InvalidRequest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response should have status code 400 for invalid request\", function () {\r",
+									"    pm.response.to.have.status(400); \r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/api/attractions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"api",
+								"attractions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4-TestFilter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response should contain both 'Tramway' and 'Taxi' mode transportation options\", function () {\r",
+									"    // API'den dönen yanıtı al\r",
+									"    var jsonData = pm.response.json();\r",
+									"    \r",
+									"    // \"Tramway\" ve \"Taxi\" modlarına sahip ulaşım seçeneklerinin bulunduğunu kontrol et\r",
+									"    var tramwayFound = false;\r",
+									"    var taxiFound = false;\r",
+									"    jsonData.transports.forEach(function(transport) {\r",
+									"        if (transport.mode === \"Tramway\") {\r",
+									"            tramwayFound = true;\r",
+									"        } else if (transport.mode === \"Taxi\") {\r",
+									"            taxiFound = true;\r",
+									"        }\r",
+									"    });\r",
+									"\r",
+									"    // Hem \"Tramway\" hem de \"Taxi\" modlarına sahip ulaşım seçeneklerinin bulunduğunu kontrol et\r",
+									"    pm.expect(tramwayFound).to.be.true;\r",
+									"    pm.expect(taxiFound).to.be.true;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/api/transports?mode\n",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"api",
+								"transports"
+							],
+							"query": [
+								{
+									"key": "mode\n",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify API returns correct data with specific filters\", function () {\r",
+									"    // Parse the response body as JSON\r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    // Check if the response contains the expected keys\r",
+									"    pm.expect(responseBody).to.have.property(\"attractions\");\r",
+									"    pm.expect(responseBody).to.have.property(\"totalPages\");\r",
+									"    pm.expect(responseBody).to.have.property(\"totalAttractions\");\r",
+									"\r",
+									"    // Check if totalPages in response matches the value of page and pageSize in the request URL\r",
+									"    pm.expect(responseBody.totalPages).to.equal(10);\r",
+									"    // Check if the attractions array is not empty\r",
+									"    pm.expect(responseBody.attractions.length).to.be.above(0);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/api/attractions?limit=10\n\n",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"api",
+								"attractions"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10\n\n"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6-Specialcharacters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test Handling of Special Characters and Non-English Text in POST request\", function () {\r",
+									"    // Check if the response status code is 201 Created\r",
+									"    pm.response.to.have.status(201);\r",
+									"\r",
+									"    // Parse the response body as JSON\r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    // Check if the response contains the input data\r",
+									"    pm.expect(responseBody).to.have.property(\"name\");\r",
+									"    pm.expect(responseBody.name).to.equal(\"åäöÅÄÖ\");\r",
+									"    pm.expect(responseBody).to.have.property(\"city\");\r",
+									"    pm.expect(responseBody.city).to.equal(\"örnek\");\r",
+									"    \r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/api/attractions\n",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"api",
+								"attractions\n"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7-ConcurrentRequests",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response includes expected data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an('array');\r",
+									"    pm.expect(jsonData).to.have.lengthOf.at.least(1);\r",
+									"    pm.expect(jsonData[0]).to.have.property('property').that.includes('expected_value');\r",
+									"});\r",
+									"\r",
+									"// Paralel olarak isteklerin gönderilmesi\r",
+									"const promises = [];\r",
+									"for (var i = 0; i < 5; i++) {\r",
+									"    const requestPromise = new Promise((resolve, reject) => {\r",
+									"        pm.sendRequest({\r",
+									"            url: 'http://localhost:3002/api/attractions?city',\r",
+									"            method: 'GET'\r",
+									"        }, function (err, response) {\r",
+									"            if (err) {\r",
+									"                reject(err);\r",
+									"            }\r",
+									"            resolve(response);\r",
+									"        });\r",
+									"    });\r",
+									"    promises.push(requestPromise);\r",
+									"}\r",
+									"\r",
+									"// Tüm isteklerin sonuçlarının test edilmesi\r",
+									"Promise.all(promises)\r",
+									"    .then(responses => {\r",
+									"        // Tüm yanıtları burada işleyebilirsiniz\r",
+									"    })\r",
+									"    .catch(error => {\r",
+									"        console.error('Error:', error);\r",
+									"    });\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/api/attractions?city\n",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"api",
+								"attractions"
+							],
+							"query": [
+								{
+									"key": "city\n",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3002/",
+			"type": "string"
+		}
+	]
+}

@@ -2,12 +2,19 @@ import mongoose from 'mongoose';
 import { faker } from '@faker-js/faker';
 import Transport from './models/model-transport.js';
 import Accommodation from './models/model-accomodation.js';
-import Attraction from './models/model-attractions.js'
+import Attraction from './models/model-attractions.js';
 import Weather from "./models/model-weather.js";
 import Cuisine from "./models/model-cuisine.js";
 
-mongoose.connect('mongodb+srv://gesraunal:esra0789@cluster0.qz4pl3b.mongodb.net/TravelPlanner');
-const db = mongoose.connection;
+// MongoDB'ye bağlanma
+mongoose.connect('mongodb+srv://gesraunal:esra0789@cluster0.qz4pl3b.mongodb.net/TravelPlanner', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
+    console.log('MongoDB bağlantısı başarılı');
+}).catch(err => {
+    console.error('MongoDB bağlantı hatası:', err);
+});
 
 // Generate fake accommodation data
 async function generateAccommodationData() {
@@ -77,22 +84,19 @@ async function generateTransportData() {
             await newTransport.save();
             console.log('Transport data added:', newTransport);
         }
+
+        // Yeni sorgu nesneleri kullanarak veri filtreleme
+        const allTransports = await Transport.find();
+        const filteredTransports = allTransports.filter(transport => {
+            return transport.mode === "Tramway" || transport.mode === "Taxi";
+        });
+
+        // Filtrelenmemiş tüm verileri sil
+        await Transport.deleteMany({ _id: { $nin: filteredTransports.map(transport => transport._id) } });
     } catch (error) {
         console.error('Error:', error);
     }
-    // Tüm verileri filtrele
-const allTransports = await Transport.find();
-
-// "Tramway" veya "Taxi" moduna sahip olanları filtrele
-const filteredTransports = allTransports.filter(transport => {
-    return transport.mode === "Tramway" || transport.mode === "Taxi";
-});
-
-// Filtrelenmemiş tüm verileri sil
-await Transport.deleteMany({ _id: { $nin: filteredTransports.map(transport => transport._id) } });
-
 }
-
 
 // Generate fake weather data
 async function generateWeatherData() {
@@ -111,17 +115,18 @@ async function generateWeatherData() {
     }
 }
 
-
-//Call hundreds of data creations
+// Call hundreds of data creations
 async function generateFakeData() {
     await generateAccommodationData();
     await generateAttractionData();
     await generateCuisineData();
     await generateTransportData();
     await generateWeatherData();
+
     // Close MongoDB connection
-    db.close();
+    await mongoose.connection.close();
+    console.log('MongoDB bağlantısı kapatıldı');
 }
 
-//Call fake data creation
+// Call fake data creation
 generateFakeData();
