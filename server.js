@@ -9,6 +9,9 @@ const port = 3000;
 server.use(express.json());
 
 mongoose.connect("mongodb+srv://gesraunal:esra0789@cluster0.qz4pl3b.mongodb.net/TravelPlanner", {
+ tls: true,
+ tlsAllowInvalidCertificates: false,
+ tlsAllowInvalidHostnames: false
  
 }).then(() => {
   console.log("MongoDB connected");
