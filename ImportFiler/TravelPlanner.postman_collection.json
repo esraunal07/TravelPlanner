@@ -116,7 +116,25 @@
 					"name": "5-",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/api/transports?mode\n",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"api",
+								"transports"
+							],
+							"query": [
+								{
+									"key": "mode\n",
+									"value": null
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -126,7 +144,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3002/api/accommodations",
+							"raw": "http://localhost:3002/api/acçommodations?name=eşşra",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -134,7 +152,13 @@
 							"port": "3002",
 							"path": [
 								"api",
-								"accommodations"
+								"acçommodations"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "eşşra"
+								}
 							]
 						}
 					},
@@ -144,7 +168,25 @@
 					"name": "7-ConcurrentRequests",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/api/attractions?city\n",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"api",
+								"attractions"
+							],
+							"query": [
+								{
+									"key": "city\n",
+									"value": null
+								}
+							]
+						}
 					},
 					"response": []
 				}
@@ -161,16 +203,36 @@
 							"item": [
 								{
 									"name": "GetTransport",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"GET request: Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"GET request: Response includes expected data\", function () {\r",
+													"    var jsonData = pm.response.json();\r",
+													"    pm.expect(jsonData).to.have.property('transports').that.is.an('array');\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
 									"request": {
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://localhost:3002/api/transports",
+											"raw": "http://localhost:3000/api/transports",
 											"protocol": "http",
 											"host": [
 												"localhost"
 											],
-											"port": "3002",
+											"port": "3000",
 											"path": [
 												"api",
 												"transports"
@@ -181,20 +243,47 @@
 								},
 								{
 									"name": "Update",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const updatedTransport = {\r",
+													"    \"_id\": \"66283038139b557e9f8652e6\", \r",
+													"    \"mode\": \"Bus\" \r",
+													"};\r",
+													"pm.sendRequest({\r",
+													"    url: 'http://localhost:3000/api/transports/' + updatedTransport._id,\r",
+													"    method: 'PUT',\r",
+													"    header: {\r",
+													"        'Content-Type': 'application/json'\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'raw',\r",
+													"        raw: JSON.stringify({\r",
+													"            \"mode\": \"Bus\"\r",
+													"        })\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    \r",
+													"    pm.test(\"PUT /api/transports returns 200 OK\", function () {\r",
+													"        pm.expect(response).to.have.status(200); \r",
+													"    });\r",
+													"   \r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
 									"request": {
 										"method": "PUT",
-										"header": []
-									},
-									"response": []
-								},
-								{
-									"name": "Create",
-									"request": {
-										"method": "POST",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"mode\" : \"bus\" \r\n}",
+											"raw": "{\r\n     \"mode\": \"Bus\",\r\n    \r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -202,28 +291,65 @@
 											}
 										},
 										"url": {
-											"raw": "http://localhost:3002/api/transports\n",
+											"raw": "http://localhost:3000/api/transports/66283038139b557e9f8652e6\n",
 											"protocol": "http",
 											"host": [
 												"localhost"
 											],
-											"port": "3002",
+											"port": "3000",
 											"path": [
 												"api",
-												"transports\n"
+												"transports",
+												"66283038139b557e9f8652e6\n"
 											]
 										}
 									},
 									"response": []
 								},
 								{
-									"name": "Remove",
+									"name": "Create",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const newTransport = {\r",
+													"    \"mode\": \"Bus\",\r",
+													"    \"description\": \"Initial description\"\r",
+													"};\r",
+													"\r",
+													"pm.sendRequest({\r",
+													"    url: 'http://localhost:3000/api/transports',\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Content-Type': 'application/json'\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'raw',\r",
+													"        raw: JSON.stringify(newTransport)\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    pm.test(\"POST /api/transports returns 201 Created\", function () {\r",
+													"        pm.expect(response).to.have.status(201);\r",
+													"    });\r",
+													"\r",
+													"    const createdTransport = response.json();\r",
+													"    console.log(\"Created Transport ID:\", createdTransport._id); // Yeni verinin _id'sini alın\r",
+													"});\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
 									"request": {
-										"method": "DELETE",
+										"method": "POST",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"mode\" : \"bus\"\r\n}",
+											"raw": "{\r\n     \"mode\": \"Bus\",\r\n     \"description\": \"Initial description\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -231,12 +357,12 @@
 											}
 										},
 										"url": {
-											"raw": "http://localhost:3002/api/transports",
+											"raw": "http://localhost:3000/api/transports",
 											"protocol": "http",
 											"host": [
 												"localhost"
 											],
-											"port": "3002",
+											"port": "3000",
 											"path": [
 												"api",
 												"transports"
@@ -244,132 +370,48 @@
 										}
 									},
 									"response": []
-								}
-							]
-						},
-						{
-							"name": "Cuisine",
-							"item": [
-								{
-									"name": "GetCuisine",
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "http://localhost:3002/api/cuisines",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3002",
-											"path": [
-												"api",
-												"cuisines"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Update",
-									"request": {
-										"method": "PUT",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"city\" : \"abeo\" \r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3002/api/cuisines",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3002",
-											"path": [
-												"api",
-												"cuisines"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Create",
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"city\" : \"antalya\" \r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3002/api/cuisines\n",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3002",
-											"path": [
-												"api",
-												"cuisines\n"
-											]
-										}
-									},
-									"response": []
 								},
 								{
 									"name": "Remove",
-									"request": {
-										"method": "DELETE",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"city\" : \"antalya\"\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: 'http://localhost:3000/api/transports/66819cf3f26eaafa0cabe4fb', // Write the _id of the record to be deleted here\r",
+													"    method: 'DELETE'\r",
+													"}, function (err, response) {\r",
+													"    \r",
+													"    pm.test(\"DELETE /api/transports returns 200 or 204\", function () {\r",
+													"        pm.expect(response.code).to.be.oneOf([200, 204]);\r",
+													"    });\r",
+													"\r",
+													"    // Check Json format\r",
+													"    if (response.code === 200) {\r",
+													"        pm.test(\"Response has JSON Content-Type\", function () {\r",
+													"            pm.expect(response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+													"        });\r",
+													"\r",
+													"        pm.test(\"Response is an Object\", function () {\r",
+													"            pm.expect(response.json()).to.be.an(\"object\");\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
 											}
-										},
-										"url": {
-											"raw": "http://localhost:3002/api/cuisines",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3002",
-											"path": [
-												"api",
-												"cuisines"
-											]
 										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "Attractions",
-							"item": [
-								{
-									"name": "remove",
+									],
 									"request": {
 										"method": "DELETE",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"name\" : \"asdfgh\"\r\n}",
+											"raw": "",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -377,93 +419,57 @@
 											}
 										},
 										"url": {
-											"raw": "http://localhost:3002/api/attractions\n",
+											"raw": "http://localhost:3000/api/transports/66819cf3f26eaafa0cabe4fb",
 											"protocol": "http",
 											"host": [
 												"localhost"
 											],
-											"port": "3002",
+											"port": "3000",
 											"path": [
 												"api",
-												"attractions\n"
+												"transports",
+												"66819cf3f26eaafa0cabe4fb"
 											]
 										}
 									},
 									"response": []
 								},
 								{
-									"name": "GetAttractions",
+									"name": "CheckDeleted",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: 'http://localhost:3000/api/transports/66819cf3f26eaafa0cabe4fb', \r",
+													"    method: 'GET'\r",
+													"}, function (err, response) {\r",
+													"    pm.test(\"GET /api/transports returns 404 Not Found after DELETE\", function () {\r",
+													"        pm.expect(response).to.have.status(404); \r",
+													"    });\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
 									"request": {
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://localhost:3002/api/attractions\n",
+											"raw": "http://localhost:3000/api/transports/66819cf3f26eaafa0cabe4fb",
 											"protocol": "http",
 											"host": [
 												"localhost"
 											],
-											"port": "3002",
+											"port": "3000",
 											"path": [
 												"api",
-												"attractions\n"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Update",
-									"request": {
-										"method": "PUT",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n     \"name\" : \"asdfgh\" \r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3002/api/attractions\n",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3002",
-											"path": [
-												"api",
-												"attractions\n"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Create",
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"city\" : \"antalya\" \r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "http://localhost:3002/api/cuisines\n",
-											"protocol": "http",
-											"host": [
-												"localhost"
-											],
-											"port": "3002",
-											"path": [
-												"api",
-												"cuisines\n"
+												"transports",
+												"66819cf3f26eaafa0cabe4fb"
 											]
 										}
 									},
@@ -478,16 +484,44 @@
 					"item": [
 						{
 							"name": "TransportData",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.sendRequest({\r",
+											"    url: 'http://localhost:3000/api/transports',\r",
+											"    method: 'GET'\r",
+											"}, function (err, response) {\r",
+											"    pm.test(\"GET /api/transports returns 200 OK\", function () {\r",
+											"        pm.expect(response).to.have.status(200);\r",
+											"        pm.expect(response).to.have.header('Content-Type', 'application/json; charset=utf-8');\r",
+											"    });\r",
+											"\r",
+											"    pm.test(\"Response contains transport data\", function () {\r",
+											"        const jsonData = response.json();\r",
+											"        pm.expect(jsonData.transports).to.be.an('array');\r",
+											"        pm.expect(jsonData.transports).to.have.lengthOf.at.least(1);\r",
+											"       \r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:3002/api/transports",
+									"raw": "http://localhost:3000/api/transports",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
-									"port": "3002",
+									"port": "3000",
 									"path": [
 										"api",
 										"transports"
@@ -503,27 +537,65 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"const mode = pm.environment.get(\"mode\");\r",
-											"\r",
-											"// Send the PUT request to update the mode record\r",
+											"// Step 1: Get Record and Store in Variables\r",
 											"pm.sendRequest({\r",
-											"    url: `http://localhost:3002/api/transports?mode=taxi`,\r",
-											"    method: 'PUT',\r",
-											"    header: {\r",
-											"        'Content-Type': 'application/json',\r",
-											"    },\r",
-											"    body: {\r",
-											"        \"mode \": \"taxi\",\r",
-											"    }\r",
-											"}, function (err, res) {\r",
-											"    // Save the updated mode from the request body in environment variable\r",
-											"    const updatedmode = pm.response.json().mode;\r",
-											"    pm.environment.set(\"updatedmode\", updatedmode);\r",
-											"    console.log(updatedmode);\r",
-											"    pm.test(\"Update Mode Record\", function () {\r",
-											"        // Check if the user record update was successful\r",
-											"        pm.expect(err).to.be.null;\r",
-											"        pm.expect(res).to.have.property('code', 200);\r",
+											"    url: 'http://localhost:3000/api/transports',\r",
+											"    method: 'GET'\r",
+											"}, function (err, response) {\r",
+											"    pm.test(\"GET /api/transports returns 200 OK\", function () {\r",
+											"        pm.expect(response).to.have.status(200);\r",
+											"    });\r",
+											"\r",
+											"    pm.test(\"Response contains transport data\", function () {\r",
+											"        const transports = response.json().transports;\r",
+											"        pm.expect(transports).to.be.an('array').that.is.not.empty;\r",
+											"    });\r",
+											"\r",
+											"    // Store the first transport data retrieved for use in the update step\r",
+											"    pm.variables.set('initialTransport', response.json().transports[0]);\r",
+											"\r",
+											"    // Step 2: Update the Record\r",
+											"    const initialTransport = pm.variables.get('initialTransport');\r",
+											"\r",
+											"    const updatedTransport = {\r",
+											"        \"_id\": initialTransport._id,\r",
+											"        \"mode\": \"Train\",\r",
+											"        \"description\": \"Updated description\"\r",
+											"    };\r",
+											"\r",
+											"    pm.sendRequest({\r",
+											"        url: 'http://localhost:3000/api/transports/' + updatedTransport._id,\r",
+											"        method: 'PUT',\r",
+											"        header: {\r",
+											"            'Content-Type': 'application/json'\r",
+											"        },\r",
+											"        body: {\r",
+											"            mode: 'raw',\r",
+											"            raw: JSON.stringify(updatedTransport)\r",
+											"        }\r",
+											"    }, function (err, response) {\r",
+											"        pm.test(\"PUT /api/transports returns 200 OK\", function () {\r",
+											"            pm.expect(response).to.have.status(200);\r",
+											"        });\r",
+											"\r",
+											"        // Step 3: Check the Updated Record\r",
+											"        pm.sendRequest({\r",
+											"            url: 'http://localhost:3000/api/transports/' + updatedTransport._id,\r",
+											"            method: 'GET'\r",
+											"        }, function (err, response) {\r",
+											"            pm.test(\"GET /api/transports/:id returns 200 OK\", function () {\r",
+											"                pm.expect(response).to.have.status(200);\r",
+											"            });\r",
+											"\r",
+											"            pm.test(\"Updated transport data reflects changes\", function () {\r",
+											"                const updatedData = response.json();\r",
+											"                pm.expect(updatedData).to.have.property('_id', updatedTransport._id);\r",
+											"                pm.expect(updatedData).to.include({\r",
+											"                    \"mode\": \"Train\",\r",
+											"                    \"description\": \"Updated description\"\r",
+											"                });\r",
+											"            });\r",
+											"        });\r",
 											"    });\r",
 											"});\r",
 											""
@@ -537,21 +609,15 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:3002/api/transports?mode=taxi\n",
+									"raw": "http://localhost:3000/api/transports",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
-									"port": "3002",
+									"port": "3000",
 									"path": [
 										"api",
 										"transports"
-									],
-									"query": [
-										{
-											"key": "mode",
-											"value": "taxi\n"
-										}
 									]
 								}
 							},
@@ -569,6 +635,8 @@
 									"pm.test(\"Status code is 200 OK\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
+									"\r",
+									"\r",
 									""
 								],
 								"type": "text/javascript",
@@ -580,12 +648,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3002/api/transports",
+							"raw": "http://localhost:3000/api/transports",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3002",
+							"port": "3000",
 							"path": [
 								"api",
 								"transports"
@@ -616,15 +684,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3002/api/attractions",
+							"raw": "http://localhost:3000/api/accommodations",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3002",
+							"port": "3000",
 							"path": [
 								"api",
-								"attractions"
+								"accommodations"
 							]
 						}
 					},
@@ -651,12 +719,12 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3002/api/attractions",
+							"raw": "http://localhost:3000/api/attractions",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3002",
+							"port": "3000",
 							"path": [
 								"api",
 								"attractions"
@@ -672,24 +740,18 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Response should contain both 'Tramway' and 'Taxi' mode transportation options\", function () {\r",
-									"    // API'den dönen yanıtı al\r",
+									"pm.test(\"Check if response contains correct data for specific filters\", function () {\r",
+									"    // Response body as JSON object\r",
 									"    var jsonData = pm.response.json();\r",
-									"    \r",
-									"    // \"Tramway\" ve \"Taxi\" modlarına sahip ulaşım seçeneklerinin bulunduğunu kontrol et\r",
-									"    var tramwayFound = false;\r",
-									"    var taxiFound = false;\r",
-									"    jsonData.transports.forEach(function(transport) {\r",
-									"        if (transport.mode === \"Tramway\") {\r",
-									"            tramwayFound = true;\r",
-									"        } else if (transport.mode === \"Taxi\") {\r",
-									"            taxiFound = true;\r",
-									"        }\r",
-									"    });\r",
 									"\r",
-									"    // Hem \"Tramway\" hem de \"Taxi\" modlarına sahip ulaşım seçeneklerinin bulunduğunu kontrol et\r",
-									"    pm.expect(tramwayFound).to.be.true;\r",
-									"    pm.expect(taxiFound).to.be.true;\r",
+									"    // Check if the response contains the expected properties\r",
+									"    pm.expect(jsonData).to.have.property(\"totalPages\");\r",
+									"    pm.expect(jsonData).to.have.property(\"totalTransports\");\r",
+									"\r",
+									"    // Iterate through the transports array and check if each transport meets the filter criteria\r",
+									"    jsonData.transports.forEach(function (transport) {\r",
+									"        pm.expect(transport.mode).to.equal(pm.environment.get(\"tramway\"));\r",
+									"    });\r",
 									"});\r",
 									""
 								],
@@ -702,20 +764,20 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3002/api/transports?mode\n",
+							"raw": "http://localhost:3000/api/transports?mode=tramway\n",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3002",
+							"port": "3000",
 							"path": [
 								"api",
 								"transports"
 							],
 							"query": [
 								{
-									"key": "mode\n",
-									"value": null
+									"key": "mode",
+									"value": "tramway\n"
 								}
 							]
 						}
@@ -723,27 +785,49 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "5-SpecificFilter",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Verify API returns correct data with specific filters\", function () {\r",
+									"// Define the page and limit parameters\r",
+									"const page = 1;\r",
+									"const limit = 10;\r",
+									"\r",
+									"// Send a GET request to the API with pagination parameters\r",
+									"pm.sendRequest({\r",
+									"    url: 'http://localhost:3000/api/attractions?page=' + page + '&limit=' + limit,\r",
+									"    method: 'GET'\r",
+									"}, function (err, res) {\r",
+									"    // Ensure the request was successful\r",
+									"    pm.expect(res).to.have.status(200);\r",
+									"\r",
 									"    // Parse the response body as JSON\r",
-									"    const responseBody = pm.response.json();\r",
+									"    const responseBody = res.json();\r",
 									"\r",
-									"    // Check if the response contains the expected keys\r",
-									"    pm.expect(responseBody).to.have.property(\"attractions\");\r",
-									"    pm.expect(responseBody).to.have.property(\"totalPages\");\r",
-									"    pm.expect(responseBody).to.have.property(\"totalAttractions\");\r",
+									"    // Verify the response contains pagination information\r",
+									"    pm.test(\"Verify API returns paginated results\", function () {\r",
+									"        pm.expect(responseBody).to.have.property(\"attractions\").that.is.an('array');\r",
+									"        pm.expect(responseBody).to.have.property(\"totalPages\").that.is.a('number');\r",
+									"        pm.expect(responseBody).to.have.property(\"totalAttractions\").that.is.a('number');\r",
+									"    });\r",
 									"\r",
-									"    // Check if totalPages in response matches the value of page and pageSize in the request URL\r",
-									"    pm.expect(responseBody.totalPages).to.equal(10);\r",
-									"    // Check if the attractions array is not empty\r",
-									"    pm.expect(responseBody.attractions.length).to.be.above(0);\r",
+									"    // Verify the correct number of items in the current page\r",
+									"    pm.test(\"Verify the correct number of items per page\", function () {\r",
+									"        pm.expect(responseBody.attractions.length).to.be.at.most(limit); // Should be less than or equal to limit\r",
+									"    });\r",
+									"\r",
+									"    // Optional: Check some specific attributes of the paginated data\r",
+									"    pm.test(\"Verify the first item has expected structure\", function () {\r",
+									"        if (responseBody.attractions.length > 0) {\r",
+									"            const firstItem = responseBody.attractions[0];\r",
+									"            pm.expect(firstItem).to.have.property('_id');\r",
+									"            pm.expect(firstItem).to.have.property('name');\r",
+									"            // Add more properties to check as needed\r",
+									"        }\r",
+									"    });\r",
 									"});\r",
-									"\r",
 									""
 								],
 								"type": "text/javascript",
@@ -755,20 +839,24 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3002/api/attractions?limit=10\n\n",
+							"raw": "http://localhost:3000/api/attractions?category?page=1&limit=10",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3002",
+							"port": "3000",
 							"path": [
 								"api",
 								"attractions"
 							],
 							"query": [
 								{
+									"key": "category?page",
+									"value": "1"
+								},
+								{
 									"key": "limit",
-									"value": "10\n\n"
+									"value": "10"
 								}
 							]
 						}
@@ -782,19 +870,19 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Test Handling of Special Characters and Non-English Text in POST request\", function () {\r",
-									"    // Check if the response status code is 201 Created\r",
-									"    pm.response.to.have.status(201);\r",
-									"\r",
-									"    // Parse the response body as JSON\r",
+									"pm.test(\"Ensure 'city' field does not contain special characters\", function () {\r",
 									"    const responseBody = pm.response.json();\r",
 									"\r",
-									"    // Check if the response contains the input data\r",
-									"    pm.expect(responseBody).to.have.property(\"name\");\r",
-									"    pm.expect(responseBody.name).to.equal(\"åäöÅÄÖ\");\r",
-									"    pm.expect(responseBody).to.have.property(\"city\");\r",
-									"    pm.expect(responseBody.city).to.equal(\"örnek\");\r",
-									"    \r",
+									"    pm.expect(responseBody).to.have.property('attractions');\r",
+									"    pm.expect(responseBody.attractions).to.be.an('array');\r",
+									"\r",
+									"    const specialCharacterPattern = /[!@#$%^&*(),?\":{}|<>]/;\r",
+									"\r",
+									"    responseBody.attractions.forEach(record => {\r",
+									"        pm.expect(record).to.have.property('city');\r",
+									"        pm.expect(record.city).to.be.a('string');\r",
+									"        pm.expect(record.city).not.to.match(specialCharacterPattern);\r",
+									"    });\r",
 									"});\r",
 									""
 								],
@@ -804,18 +892,24 @@
 						}
 					],
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3002/api/attractions\n",
+							"raw": "http://localhost:3000/api/attractions?city=Antalya",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3002",
+							"port": "3000",
 							"path": [
 								"api",
-								"attractions\n"
+								"attractions"
+							],
+							"query": [
+								{
+									"key": "city",
+									"value": "Antalya"
+								}
 							]
 						}
 					},
@@ -828,29 +922,19 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Response includes expected data\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.be.an('array');\r",
-									"    pm.expect(jsonData).to.have.lengthOf.at.least(1);\r",
-									"    pm.expect(jsonData[0]).to.have.property('property').that.includes('expected_value');\r",
-									"});\r",
-									"\r",
 									"// Paralel olarak isteklerin gönderilmesi\r",
 									"const promises = [];\r",
-									"for (var i = 0; i < 5; i++) {\r",
+									"for (let i = 0; i < 5; i++) {\r",
 									"    const requestPromise = new Promise((resolve, reject) => {\r",
 									"        pm.sendRequest({\r",
-									"            url: 'http://localhost:3002/api/attractions?city',\r",
+									"            url: 'http://localhost:3000/api/attractions?city=Waltonstead',\r",
 									"            method: 'GET'\r",
 									"        }, function (err, response) {\r",
 									"            if (err) {\r",
 									"                reject(err);\r",
+									"            } else {\r",
+									"                resolve(response);\r",
 									"            }\r",
-									"            resolve(response);\r",
 									"        });\r",
 									"    });\r",
 									"    promises.push(requestPromise);\r",
@@ -859,10 +943,22 @@
 									"// Tüm isteklerin sonuçlarının test edilmesi\r",
 									"Promise.all(promises)\r",
 									"    .then(responses => {\r",
-									"        // Tüm yanıtları burada işleyebilirsiniz\r",
+									"        responses.forEach(response => {\r",
+									"            pm.test(\"Status code is 200\", function () {\r",
+									"                pm.expect(response).to.have.status(200);\r",
+									"            });\r",
+									"            \r",
+									"            pm.test(\"Response includes expected data\", function () {\r",
+									"                const jsonData = response.json();\r",
+									"                pm.expect(jsonData).to.have.property('attractions').that.is.an('array');\r",
+									"                pm.expect(jsonData.attractions).to.have.lengthOf.at.least(1);\r",
+									"                pm.expect(jsonData.attractions[0]).to.have.property('city').that.includes('Waltonstead');\r",
+									"            });\r",
+									"        });\r",
 									"    })\r",
 									"    .catch(error => {\r",
 									"        console.error('Error:', error);\r",
+									"        throw new Error(`Test failed due to error: ${error}`);\r",
 									"    });\r",
 									""
 								],
@@ -875,21 +971,78 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3002/api/attractions?city\n",
+							"raw": "http://localhost:3000/api/attractions?city=Waltonstead\n",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3002",
+							"port": "3000",
 							"path": [
 								"api",
 								"attractions"
 							],
 							"query": [
 								{
-									"key": "city\n",
-									"value": null
+									"key": "city",
+									"value": "Waltonstead\n"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "13-RateLimit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Rate limit test\r",
+									"pm.test(\"Rate limit test\", function () {\r",
+									"    for (let i = 0; i < 101; i++) { // Send 101 requests\r",
+									"        pm.sendRequest({\r",
+									"            url: 'http://localhost:3000/api/cuisines', \r",
+									"            method: 'GET',\r",
+									"           \r",
+									"        }, function (err, response) {\r",
+									"            if (err) {\r",
+									"                console.error('Error:', err);\r",
+									"                return;\r",
+									"            }\r",
+									"\r",
+									"            // Check that a status code 429 is returned when the limit is exceeded\r",
+									"            if (i < 100) {\r",
+									"                pm.response.to.have.status(200); // Expect a successful status for the first 100 requests\r",
+									"            } else {\r",
+									"                pm.response.to.have.status(429); // Expect status code 429 for the 101st request\r",
+									"                pm.expect(response.json().message).to.eql(\"Too many request from this IP, please try again in an 15 minutes.\"); // Check the error message\r",
+									"            }\r",
+									"        });\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/cuisines",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"cuisines"
 							]
 						}
 					},
