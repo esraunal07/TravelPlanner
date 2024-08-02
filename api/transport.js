@@ -42,19 +42,7 @@ export default function transport(server, mongoose) {
     }
   });
 
-// Gerekli kütüphanelerin içe aktarılması
-const express = require('express');
-const mongoose = require('mongoose');
-const Transport = require('./models/Transport'); // Transport modelinizin doğru yolu
 
-const server = express();
-server.use(express.json());
-
-// MongoDB'ye bağlantı
-mongoose.connect('mongodb://localhost:27017/travelplanner', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
 
 // POST isteği ile yeni bir taşıma seçeneği oluşturma
 server.post('/api/transports', async (req, res) => {
@@ -84,44 +72,38 @@ server.post('/api/transports', async (req, res) => {
   }
 });
 
-// Sunucuyu dinleme
-server.listen(3000, () => {
-  console.log('Server is running on port 3000');
-});
-
-
   // PUT request to update an existing transportation option
-server.put("/api/transports/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { mode, description } = req.body;
 
-    // Validate input
-    if (!mode || !description) {
-      return res.status(400).json({ message: "Mode and description are required fields." });
-    }
+  // Middleware
+app.use(express.json());
 
-    // Update the transportation option in the database
-    const updatedTransport = await Transport.findByIdAndUpdate(
-      id,
-      { mode, description },
-      { new: true } // Returns the updated document
-    );
+// Sunucuyu oluşturun
+const server = http.createServer(app);
+  server.on('request', app);
 
-    if (!updatedTransport) {
-      return res.status(404).json({ message: "Transport not found." });
-    }
-
-    // Success response
-    res.status(200).json({
-      message: "Transportation option updated successfully.",
-      transport: updatedTransport
-    });
-  } catch (error) {
-    console.error("Error while updating transportation option:", error);
-    res.status(500).json({ message: "Internal server error." });
-  }
-});
+  server.put('/api/transports/:id', async (req, res) => {
+      try {
+          const { mode, description } = req.body;
+          const transportId = req.params.id;
+  
+          // Transport belgesini güncelleyin
+          const updatedTransport = await Transport.findByIdAndUpdate(
+              transportId,
+              { mode, description },
+              { new: true } // Güncellenmiş dokümanı döndürür
+          );
+  
+          if (!updatedTransport) {
+              return res.status(404).json({ message: 'Transport not found' });
+          }
+  
+          res.status(200).json({ message: "Transport updated successfully", transport: updatedTransport });
+      } catch (error) {
+          console.error("Error while updating transport:", error);
+          res.status(500).json({ error: "Internal server error" });
+      }
+  });
+  
 
   // DELETE request to delete a transportation option
   server.delete("/api/transports/:id", async (req, res) => {
