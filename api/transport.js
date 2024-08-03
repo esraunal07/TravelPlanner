@@ -72,15 +72,6 @@ server.post('/api/transports', async (req, res) => {
   }
 });
 
-  // PUT request to update an existing transportation option
-
-  // Middleware
-app.use(express.json());
-
-// Sunucuyu oluşturun
-const server = http.createServer(app);
-  server.on('request', app);
-
   server.put('/api/transports/:id', async (req, res) => {
       try {
           const { mode, description } = req.body;
